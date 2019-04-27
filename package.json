@@ -3,6 +3,7 @@
   "private": true,
   "devDependencies": {
     "@types/commander": "^2.12.2",
+    "@types/node": "^11.13.8",
     "commander": "^2.20.0",
     "lerna": "^3.4.3",
     "tsconfig-paths": "^3.8.0"
