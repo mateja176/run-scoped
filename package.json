@@ -1,14 +1,15 @@
 {
-  "name": "root",
-  "private": true,
+  "name": "runin",
+  "main": "runin.js",
   "files": [
-    "index.js"
+    "runin.js"
   ],
   "bin": {
     "runin": "runin.ts"
   },
   "scripts": {
-    "list-all": "./runin.ts 'ls -hal'"
+    "list-all": "./runin.js 'ls -hal'",
+    "build": "tsc runin.ts"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
