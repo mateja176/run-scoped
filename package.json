@@ -1,21 +1,23 @@
 {
   "name": "runin",
-  "main": "runin.js",
   "files": [
     "runin.js"
   ],
   "bin": {
-    "runin": "runin.ts"
+    "runin": "runin.js"
   },
   "scripts": {
-    "list-all": "./runin.js 'ls -hal'",
+    "runin": "./runin.js 'ts-node -r tsconfig-paths/register src'",
+    "exec": "lerna exec 'ts-node -r tsconfig-paths/register src'",
     "build": "tsc runin.ts"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^2.20.0"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
     "@types/node": "^11.13.8",
-    "chalk": "^2.4.2",
-    "commander": "^2.20.0",
     "lerna": "^3.4.3",
     "tsconfig-paths": "^3.8.0"
   }
