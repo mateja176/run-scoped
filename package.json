@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "devDependencies": {
+    "@types/commander": "^2.12.2",
     "commander": "^2.20.0",
     "lerna": "^3.4.3",
     "tsconfig-paths": "^3.8.0"
