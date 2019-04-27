@@ -9,6 +9,7 @@
   "scripts": {
     "runin": "./runin.js 'ts-node -r tsconfig-paths/register src'",
     "exec": "lerna exec 'ts-node -r tsconfig-paths/register src'",
+    "echo": "lerna exec 'echo \"PWD: $PWD\"'",
     "build": "tsc runin.ts"
   },
   "dependencies": {
