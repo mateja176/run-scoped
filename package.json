@@ -7,14 +7,14 @@
     "runin": "runin.js"
   },
   "scripts": {
-    "run:lerna": "lerna exec 'ts-node -r tsconfig-paths/register src'",
+    "prelog": "echo prelog $PWD",
+    "log": "echo log $PWD",
+    "postlog": "echo postlog $PWD",
+    "prelog:lerna": "lerna exec 'echo prelog $PWD'",
+    "log:lerna": "lerna exec 'echo log $PWD'",
+    "postlog:lerna": "lerna exec 'echo postlog $PWD'",
     "run": "ts-node -r tsconfig-paths/register src",
-    "prelog": "echo prelog",
-    "log": "echo $PWD",
-    "postlog": "echo postlog",
-    "prelog:lerna": "lerna exec 'echo prelog'",
-    "log:lerna": "lerna exec 'echo $PWD'",
-    "postlog:lerna": "lerna exec 'echo postlog'"
+    "run:lerna": "lerna exec 'ts-node -r tsconfig-paths/register src'"
   },
   "dependencies": {
     "chalk": "^2.4.2",
