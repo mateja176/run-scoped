@@ -9,7 +9,10 @@
   "scripts": {
     "exec": "lerna exec 'ts-node -r tsconfig-paths/register src'",
     "prepublish": "cat package.json | json -e 'this.main = \"lib/index.js\"' > package,json'",
-    "postpublish": "cat package.json | json -e 'delete this.main' > package,json'"
+    "postpublish": "cat package.json | json -e 'delete this.main' > package,json'",
+    "prelog": "echo prelog",
+    "log": "echo $PWD",
+    "postlog": "echo postlog"
   },
   "dependencies": {
     "chalk": "^2.4.2",
