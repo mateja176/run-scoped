@@ -11,7 +11,10 @@
     "run:yarn": "ts-node -r tsconfig-paths/register src",
     "prelog": "echo prelog",
     "log": "echo $PWD",
-    "postlog": "echo postlog"
+    "postlog": "echo postlog",
+    "prelog:lerna": "lerna exec 'echo prelog'",
+    "log:lerna": "lerna exec 'echo $PWD'",
+    "postlog:lerna": "lerna exec 'echo postlog'"
   },
   "dependencies": {
     "chalk": "^2.4.2",
