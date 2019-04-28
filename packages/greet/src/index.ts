@@ -1,5 +1,4 @@
-import { capitalize } from 'common/src';
-import getLast from 'common/src/getLast';
+import getLast, { capitalize } from 'common';
 
 export const greet = (name: string) => `Hello ${capitalize(name)}`;
 
