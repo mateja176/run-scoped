@@ -7,7 +7,9 @@
     "runin": "runin.js"
   },
   "scripts": {
-    "exec": "lerna exec 'ts-node -r tsconfig-paths/register src'"
+    "exec": "lerna exec 'ts-node -r tsconfig-paths/register src'",
+    "prepublish": "cat package.json | json -e 'this.main = \"lib/index.js\"' > package,json'",
+    "postpublish": "cat package.json | json -e 'delete this.main' > package,json'"
   },
   "dependencies": {
     "chalk": "^2.4.2",
