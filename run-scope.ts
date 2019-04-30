@@ -17,7 +17,7 @@ const {
 } = yargs;
 
 if (!scope) {
-  throw new Error('Please provide a scope argument i.e. --scope myPackage');
+  throw new Error('Please provide a scope argument i.e. "--scope <myPackage>"');
 }
 
 const packageJSONPath = path.join(__dirname, 'package.json');
@@ -37,6 +37,10 @@ if (!script) {
 const packagePath = path.join(__dirname, prefix as string, scope as string);
 
 const argsString = (Object.entries(argsObject) as string[][])
+  .map(([key, value]) => [
+    key.length === 1 ? '-'.concat(key) : '--'.concat(key),
+    value,
+  ])
   .reduce((args, argEntry) => args.concat(argEntry), [])
   .join(' ');
 
