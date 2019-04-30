@@ -1,18 +1,18 @@
 {
-  "name": "run-scope",
+  "name": "run-scoped",
   "version": "0.1.1",
-  "main": "dist/run-scope.js",
-  "types": "dist/run-scope.d.ts",
+  "main": "dist/run-scoped.js",
+  "types": "dist/run-scoped.d.ts",
   "files": [
-    "dist/run-scope.js",
-    "dist/run-scope.d.ts"
+    "dist/run-scoped.js",
+    "dist/run-scoped.d.ts"
   ],
   "bin": {
-    "run-scope": "dist/run-scope.js"
+    "run-scoped": "dist/run-scoped.js"
   },
   "scripts": {
-    "build": "tsc run-scope --outDir dist --declaration",
-    "build:publish": "npm run build && git add -A && git commit -m 'publish' && npm version patch && git push --follow-tags",
+    "build": "tsc run-scoped --outDir dist --declaration",
+    "build:publish": "npm run build && git add -A && git commit -m 'publish' && npm version patch && npm publish && git push --follow-tags",
     "prelog": "echo prelog $PWD",
     "log": "echo log $PWD",
     "postlog": "echo postlog $PWD",
