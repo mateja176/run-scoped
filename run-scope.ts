@@ -34,13 +34,31 @@ if (!script) {
 
 const [command, ...args] = script.split(' ');
 
-const spawnedCommand = cp.spawn(
-  command,
-  args.concat(Object.entries(additionalArgs)),
-  {
-    cwd: path.join(__dirname, prefix as string, scope as string),
-  },
-);
+const allArgs = args.concat(Object.entries(additionalArgs));
+
+const packagePath = path.join(__dirname, prefix as string, scope as string);
+
+const envKeys = Object.keys(process.env);
+
+const env = Object.entries(process.env)
+  .map(([key, value]) => [
+    key,
+    value.includes(__dirname) ? value.replace(__dirname, packagePath) : value,
+  ])
+  .reduce<NodeJS.ProcessEnv>(
+    (tempEnv, [key, value]) => ({ ...tempEnv, [key]: value }),
+    {},
+  );
+
+const argsWithEnv = allArgs.map((arg: string) => {
+  const argWithout$ = arg.slice(1);
+
+  return envKeys.includes(argWithout$) ? env[argWithout$] : arg;
+});
+
+const spawnedCommand = cp.spawn(command, argsWithEnv, {
+  cwd: path.join(packagePath),
+});
 
 spawnedCommand.stdout.on('data', data => console.log(chalk.italic(data)));
 
