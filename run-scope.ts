@@ -9,18 +9,13 @@ import chalk from 'chalk';
 // parse args
 const {
   argv: {
-    scope,
+    scope = '*',
     prefix = 'packages',
     _: [scriptName],
     $0,
     ...argsObject
   },
 } = yargs;
-
-// todo make scope a glob pattern
-if (!scope) {
-  throw new Error('Please provide a scope argument i.e. "--scope <myPackage>"');
-}
 
 const packageJSONPath = path.join(__dirname, 'package.json');
 
@@ -42,9 +37,11 @@ if (!script) {
   throw new Error(`'${scriptName}' not found in ${packageJSONPath}`);
 }
 
-const packagePath = path.join(__dirname, prefix as string, scope as string);
+const packagesPath = path.join(__dirname, prefix as string);
 
-const runScriptWithArgs = (args: string) => (scriptToRun: string) => {
+const runScriptWithArgs = (args: string) => (packagePath: string) => (
+  scriptToRun: string,
+) => {
   const scriptWithArgs = scriptToRun.concat(args);
 
   console.log(chalk.blue(`🏁 '${scriptWithArgs}'`));
@@ -57,23 +54,33 @@ const runScriptWithArgs = (args: string) => (scriptToRun: string) => {
 
 const runScript = runScriptWithArgs('');
 
-if (prescript) {
-  runScript(prescript);
-}
+type Args = { [key: string]: string };
 
-// format additional arguments
-const argsString = (Object.entries(argsObject) as string[][])
-  .map(([key, value]) => [
-    key.length === 1 ? '-'.concat(key) : '--'.concat(key),
-    value,
-  ])
-  .reduce((args, argEntry) => args.concat(argEntry), [])
-  .join(' ');
+const formatArgs = (args: Args) =>
+  (Object.entries(args) as string[][])
+    .map(([key, value]) => [
+      key.length === 1 ? '-'.concat(key) : '--'.concat(key),
+      value,
+    ])
+    .reduce((argsArray, argEntry) => argsArray.concat(argEntry), [])
+    .join(' ');
 
-// script
-runScriptWithArgs(argsString)(script);
+const runScriptTrio = (args: string) => (packagePath: string) => {
+  if (prescript) {
+    runScript(packagePath)(prescript);
+  }
 
-// postscript
-if (postscript) {
-  runScript(postscript);
-}
+  runScriptWithArgs(args)(packagePath)(script);
+
+  if (postscript) {
+    runScript(packagePath)(postscript);
+  }
+};
+
+const packageNames = fs.readdirSync(packagesPath);
+
+const formattedArgs = formatArgs(argsObject as Args);
+
+packageNames
+  .map(packageName => path.join(packagesPath, packageName))
+  .forEach(runScriptTrio(formattedArgs));
