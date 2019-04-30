@@ -1,28 +1,46 @@
 #!/usr/bin/env ts-node
 
+import * as yargs from 'yargs';
+import * as fs from 'fs';
+import * as path from 'path';
 import * as cp from 'child_process';
 import chalk from 'chalk';
-import * as path from 'path';
-import * as commander from 'commander';
 
-const [, , commandWithArgs] = process.argv;
+const {
+  argv: {
+    scope,
+    prefix = 'packages',
+    _: [scriptName],
+    $0,
+    ...additionalArgs
+  },
+} = yargs;
 
-const [command, ...args] = commandWithArgs.split(' ');
+if (!scope) {
+  throw new Error('Please provide a scope argument i.e. --scope myPackage');
+}
 
-commander
-  .option('-s, --scope <package>', 'Package to execute command in')
-  .option(
-    '-p, --prefix <path>',
-    'Prefix to prepend to package name',
-    'packages',
-  )
-  .parse(process.argv);
-
-const { scope, prefix } = commander;
-
-const spawnedCommand = cp.spawn(command, args, {
-  cwd: path.join(__dirname, prefix, scope),
+const packageJSON = fs.readFileSync(path.join(__dirname, 'package.json'), {
+  encoding: 'UTF-8',
 });
+
+const { scripts } = JSON.parse(packageJSON);
+
+const script = scripts[scriptName];
+
+if (!script) {
+  throw new Error(`'${scriptName}' not found in package.json`);
+}
+
+const [command, ...args] = script.split(' ');
+
+const spawnedCommand = cp.spawn(
+  command,
+  args.concat(Object.entries(additionalArgs)),
+  {
+    cwd: path.join(__dirname, prefix as string, scope as string),
+  },
+);
 
 spawnedCommand.stdout.on('data', data => console.log(chalk.italic(data)));
 

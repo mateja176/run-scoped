@@ -4,7 +4,7 @@
     "run-scope.js"
   ],
   "bin": {
-    "runin": "run-scope.js"
+    "run-scope": "run-scope.js"
   },
   "scripts": {
     "prelog": "echo prelog $PWD",
@@ -14,7 +14,8 @@
     "log:lerna": "lerna exec 'echo log $PWD'",
     "postlog:lerna": "lerna exec 'echo postlog $PWD'",
     "run": "ts-node -r tsconfig-paths/register src",
-    "run:lerna": "lerna exec 'ts-node -r tsconfig-paths/register src'"
+    "run:lerna": "lerna exec 'ts-node -r tsconfig-paths/register src'",
+    "parse": "json { \"a\": 1 }"
   },
   "dependencies": {
     "chalk": "^2.4.2",
@@ -24,6 +25,7 @@
     "@types/commander": "^2.12.2",
     "@types/node": "^11.13.8",
     "@types/yargs": "^13.0.0",
+    "json": "^9.0.6",
     "lerna": "^3.4.3",
     "tsconfig-paths": "^3.8.0",
     "wsrun": "^3.6.5"
