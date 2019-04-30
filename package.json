@@ -15,7 +15,7 @@
     "postlog:lerna": "lerna exec 'echo postlog $PWD'",
     "run": "ts-node -r tsconfig-paths/register src",
     "run:lerna": "lerna exec 'ts-node -r tsconfig-paths/register src'",
-    "parse": "json { \"a\": 1 }"
+    "json": "echo '{ \"a\": 1 }' | json"
   },
   "dependencies": {
     "chalk": "^2.4.2",
