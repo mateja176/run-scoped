@@ -15,7 +15,8 @@
     "postlog:lerna": "lerna exec 'echo postlog $PWD'",
     "run": "ts-node -r tsconfig-paths/register src",
     "run:lerna": "lerna exec 'ts-node -r tsconfig-paths/register src'",
-    "json": "echo '{ \"age\": 1 }' | json"
+    "json": "echo '{ \"age\": 1 }' | json",
+    "log:env": "cross-env FOO=BAR printenv PWD FOO"
   },
   "dependencies": {
     "chalk": "^2.4.2",
