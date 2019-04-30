@@ -13,10 +13,12 @@
     "prelog:lerna": "lerna exec 'echo prelog $PWD'",
     "log:lerna": "lerna exec 'echo log $PWD'",
     "postlog:lerna": "lerna exec 'echo postlog $PWD'",
+    "prelog:env": "cross-env FOO=prelog printenv PWD FOO",
+    "log:env": "cross-env FOO=log printenv PWD FOO",
+    "postlog:env": "cross-env FOO=postlog printenv PWD FOO",
     "run": "ts-node -r tsconfig-paths/register src",
     "run:lerna": "lerna exec 'ts-node -r tsconfig-paths/register src'",
-    "json": "echo '{ \"age\": 1 }' | json",
-    "log:env": "cross-env FOO=BAR printenv PWD FOO"
+    "json": "echo '{ \"age\": 1 }' | json"
   },
   "dependencies": {
     "chalk": "^2.4.2",

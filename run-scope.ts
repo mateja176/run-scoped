@@ -17,6 +17,7 @@ const {
   },
 } = yargs;
 
+// todo make scope a glob pattern
 if (!scope) {
   throw new Error('Please provide a scope argument i.e. "--scope <myPackage>"');
 }
@@ -27,12 +28,37 @@ const packageJSON = fs.readFileSync(packageJSONPath, {
   encoding: 'UTF-8',
 });
 
-const { scripts } = JSON.parse(packageJSON);
+// get scripts
+const {
+  scripts: {
+    ['pre'.concat(scriptName)]: prescript,
+    [scriptName]: script,
+    ['post'.concat(scriptName)]: postscript,
+  },
+} = JSON.parse(packageJSON);
 
-const script = scripts[scriptName];
-
+// throw if no script found
 if (!script) {
   throw new Error(`'${scriptName}' not found in ${packageJSONPath}`);
+}
+
+const packagePath = path.join(__dirname, prefix as string, scope as string);
+
+const runScriptWithArgs = (args: string) => (scriptToRun: string) => {
+  const scriptWithArgs = scriptToRun.concat(args);
+
+  console.log(chalk.blue(`🏁 '${scriptWithArgs}'`));
+
+  cp.execSync(scriptWithArgs, {
+    cwd: packagePath,
+    stdio: 'inherit',
+  });
+};
+
+const runScript = runScriptWithArgs('');
+
+if (prescript) {
+  runScript(prescript);
 }
 
 // format additional arguments
@@ -44,22 +70,10 @@ const argsString = (Object.entries(argsObject) as string[][])
   .reduce((args, argEntry) => args.concat(argEntry), [])
   .join(' ');
 
-// append additional arguments
-const scriptWithAdditionalArgs = argsString
-  ? script.concat(' ', argsString)
-  : script;
+// script
+runScriptWithArgs(argsString)(script);
 
-const packagePath = path.join(__dirname, prefix as string, scope as string);
-
-const childProcess = cp.exec(scriptWithAdditionalArgs, {
-  cwd: packagePath,
-});
-
-// execute command
-childProcess.stdout.on('data', data => console.log(chalk.italic(data)));
-
-childProcess.stderr.on('data', data => console.error(chalk.red(data)));
-
-childProcess.on('close', () =>
-  console.info(chalk.green(`✔ Script: '${scriptWithAdditionalArgs}'`)),
-);
+// postscript
+if (postscript) {
+  runScript(postscript);
+}
