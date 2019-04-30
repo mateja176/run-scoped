@@ -1,10 +1,10 @@
 {
-  "name": "runin",
+  "name": "run-scope",
   "files": [
-    "runin.js"
+    "run-scope.js"
   ],
   "bin": {
-    "runin": "runin.js"
+    "runin": "run-scope.js"
   },
   "scripts": {
     "prelog": "echo prelog $PWD",
