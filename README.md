@@ -1,12 +1,29 @@
 # Run Scoped
 
+## Motivation
+
+Avoid duplicating scripts in a monorepo
+
+Manage your scripts in a centralized way using `run-scoped`
+
+## Description
+
+Run arbitrary script from `package.json` in any sub-directory or package
+
+\* See how to set up a monorepo using lerna [here](https://github.com/lerna/lerna/)
+
+## Options
+
+```sh
+rs [--scope packageNameGlob="*"] [--prefix pathToPackages="packages"]
+
+```
+
 ## Usage
 
-See how to set up a monorepo using lerna [here](https://github.com/lerna/lerna/)
+### Example Setup
 
-Imagine the following setup
-
-### package.json
+#### package.json
 
 ```json
 {
@@ -18,7 +35,7 @@ Imagine the following setup
 }
 ```
 
-### packages
+#### packages
 
 ```txt
 packages
@@ -27,12 +44,13 @@ packages
 
 ```
 
+### Using run-scoped
+
 ```sh
 rs log --scope greet
-# or run-scoped log --scope greet
 ```
 
-Outputs
+#### Outputs
 
 <u>path-your-project/packages/greet</u>
 
