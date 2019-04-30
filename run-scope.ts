@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as cp from 'child_process';
 import chalk from 'chalk';
+import * as glob from 'glob';
 
 // parse args
 const {
@@ -17,6 +18,7 @@ const {
   },
 } = yargs;
 
+// read package.json
 const packageJSONPath = path.join(__dirname, 'package.json');
 
 const packageJSON = fs.readFileSync(packageJSONPath, {
@@ -37,14 +39,13 @@ if (!script) {
   throw new Error(`'${scriptName}' not found in ${packageJSONPath}`);
 }
 
-const packagesPath = path.join(__dirname, prefix as string);
-
 const runScriptWithArgs = (args: string) => (packagePath: string) => (
   scriptToRun: string,
 ) => {
   const scriptWithArgs = scriptToRun.concat(args);
 
-  console.log(chalk.blue(`🏁 '${scriptWithArgs}'`));
+  console.log(chalk.underline(packagePath));
+  console.log(chalk.italic(scriptWithArgs));
 
   cp.execSync(scriptWithArgs, {
     cwd: packagePath,
@@ -77,10 +78,18 @@ const runScriptTrio = (args: string) => (packagePath: string) => {
   }
 };
 
-const packageNames = fs.readdirSync(packagesPath);
-
 const formattedArgs = formatArgs(argsObject as Args);
 
-packageNames
-  .map(packageName => path.join(packagesPath, packageName))
-  .forEach(runScriptTrio(formattedArgs));
+glob(
+  path.join(prefix as string, scope as string),
+  { absolute: true },
+  (err, paths) => {
+    if (err) {
+      throw new Error(
+        `Error while searching for packages with scope '${scope}'`,
+      );
+    }
+
+    paths.forEach(runScriptTrio(formattedArgs));
+  },
+);
