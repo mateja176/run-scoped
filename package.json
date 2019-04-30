@@ -1,6 +1,6 @@
 {
   "name": "run-scoped",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "dist/run-scoped.js",
   "types": "dist/run-scoped.d.ts",
   "files": [
