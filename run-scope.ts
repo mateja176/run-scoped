@@ -6,6 +6,7 @@ import * as path from 'path';
 import * as cp from 'child_process';
 import chalk from 'chalk';
 
+// parse args
 const {
   argv: {
     scope,
@@ -34,8 +35,7 @@ if (!script) {
   throw new Error(`'${scriptName}' not found in ${packageJSONPath}`);
 }
 
-const packagePath = path.join(__dirname, prefix as string, scope as string);
-
+// format additional arguments
 const argsString = (Object.entries(argsObject) as string[][])
   .map(([key, value]) => [
     key.length === 1 ? '-'.concat(key) : '--'.concat(key),
@@ -44,14 +44,18 @@ const argsString = (Object.entries(argsObject) as string[][])
   .reduce((args, argEntry) => args.concat(argEntry), [])
   .join(' ');
 
+// append additional arguments
 const scriptWithAdditionalArgs = argsString
   ? script.concat(' ', argsString)
   : script;
+
+const packagePath = path.join(__dirname, prefix as string, scope as string);
 
 const childProcess = cp.exec(scriptWithAdditionalArgs, {
   cwd: packagePath,
 });
 
+// execute command
 childProcess.stdout.on('data', data => console.log(chalk.italic(data)));
 
 childProcess.stderr.on('data', data => console.error(chalk.red(data)));
