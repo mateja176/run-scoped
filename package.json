@@ -8,7 +8,8 @@
     "dist/run-scoped.d.ts"
   ],
   "bin": {
-    "run-scoped": "dist/run-scoped.js"
+    "run-scoped": "dist/run-scoped.js",
+    "rs": "dist/run-scoped.js"
   },
   "scripts": {
     "build": "tsc run-scoped --outDir dist --declaration",
